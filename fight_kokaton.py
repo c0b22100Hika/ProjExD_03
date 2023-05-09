@@ -157,6 +157,26 @@ class Beam:
         self._rct.move_ip(self._vx, self._vy)
         screen.blit(self._img, self._rct)
         
+class Explosion:
+    def __init__(self,obj:Bomb, life:int):
+        self._imgs = [pg.transform.flip(pg.transform.rotozoom(pg.image.load(f"ex03/fig/explosion.gif"), 0, 2.0), False, False),
+                 pg.transform.flip(pg.transform.rotozoom(pg.image.load(f"ex03/fig/explosion.gif"), 0, 2.0), False, True),
+                 pg.transform.flip(pg.transform.rotozoom(pg.image.load(f"ex03/fig/explosion.gif"), 0, 2.0), True, True)
+                 ]
+        self.img = self._imgs[0]
+        self._rct = self.img.get_rect()
+        self._rct.center = obj._rct.center
+        
+        self._life = life 
+    
+    def update(self, screen):
+
+        self._life -= 1
+        print(self._life)
+        self.img = self._imgs[self._life % 3]
+        screen.blit(self.img, self._rct)
+        screen.blit(self.img, self._rct)
+        pg.display.update()
 
 
 def main():
@@ -197,14 +217,20 @@ def main():
             beam.update(screen)
             for i,bomb in enumerate(bombs):
                 if beam._rct.colliderect(bomb._rct):
+                    explosion = Explosion(bombs[i], 20)
+                    for j in range(20):
+                        clock.tick(250)
+                        explosion.update(screen)
+
                     beam = None
+                    
                     del bombs[i]
                     bird.change_img(6, screen)
                     break
                     # pg.display.update()
                     # time.sleep(1)
                     # return
-                    
+
         pg.display.update()
         clock.tick(1000)
 
