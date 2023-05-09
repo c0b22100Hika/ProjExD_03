@@ -168,6 +168,9 @@ class Beam:
         screen.blit(self._img, self._rct)
         
 class Explosion:
+    """
+    爆発に関するクラスについて
+    """
     def __init__(self,obj:Bomb, life:int):
         self._imgs = [pg.transform.flip(pg.transform.rotozoom(pg.image.load(f"ex03/fig/explosion.gif"), 0, 2.0), False, False),
                  pg.transform.flip(pg.transform.rotozoom(pg.image.load(f"ex03/fig/explosion.gif"), 0, 2.0), False, True),
