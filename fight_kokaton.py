@@ -1,6 +1,7 @@
 import random
 import sys
 import time
+import math
 
 import pygame as pg
 
@@ -71,6 +72,7 @@ class Bird:
         self._img = self._imgs[(1,0)]
         self._rct = self._img.get_rect()
         self._rct.center = xy
+        self.vect = (1,0)
 
     def change_img(self, num: int, screen: pg.Surface):
         """
@@ -101,8 +103,12 @@ class Bird:
                 if key_lst[k]:
                     self._rct.move_ip(-mv[0], -mv[1])
         if tuple(sum_mv) != (0,0):
+            self.vect = tuple(sum_mv)
             self._img = self._imgs[tuple(sum_mv)]
         screen.blit(self._img, self._rct)
+
+    def get_direction(self):
+        return self.vect
 
 
 class Bomb:
@@ -148,6 +154,13 @@ class Beam:
     def __init__(self, bird: Bird):
         self._img = pg.transform.rotozoom(pg.image.load(f"ex03/fig/beam.png"), 0, 2.0)
         self._rct = self._img.get_rect()
+        
+        self.vect = bird.get_direction()
+        # math.atan2(self.vect[0],self.vect[1])
+
+
+
+
         self._rct.centerx = bird._rct.centerx
         self._rct.centery = bird._rct.centery - 50
 
