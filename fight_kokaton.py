@@ -158,9 +158,6 @@ class Beam:
         self.vect = bird.get_direction()
         # math.atan2(self.vect[0],self.vect[1])
 
-
-
-
         self._rct.centerx = bird._rct.centerx
         self._rct.centery = bird._rct.centery - 50
 
@@ -198,27 +195,40 @@ def main():
     clock = pg.time.Clock()
     bg_img = pg.image.load("ex03/fig/pg_bg.jpg")
 
+    fonto  = pg.font.Font(None, 80)
+    
+
     bird = Bird(3, (900, 400))
     bombs = [Bomb() for i in range(NUM_OF_BOMBS)]
+
+    beams = [Beam(bird) for i in range(20)]
 
     beam = None
 
     tmr = 0
     while True:
+        txt = fonto.render(str(tmr/1000), True, (255, 0, 0))  # 時間を表示させる
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
                     beam = Beam(bird)
+                    beams.append(Beam(bird))
         tmr += 1
         screen.blit(bg_img, [0, 0])
+
+        # for i, bea in enumerate(beams):
+
+
+
         
         for bomb in bombs:
             bomb.update(screen)
             if bird._rct.colliderect(bomb._rct):
                 # ゲームオーバー時に，こうかとん画像を切り替え，1秒間表示させる
                 bird.change_img(8, screen)
+                screen.blit(txt, [10, 10])
                 pg.display.update()
                 time.sleep(1)
                 return
@@ -244,8 +254,12 @@ def main():
                     # time.sleep(1)
                     # return
 
+        
+        screen.blit(txt, [10, 10])
+
         pg.display.update()
         clock.tick(1000)
+
 
 
 if __name__ == "__main__":
