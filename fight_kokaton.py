@@ -204,6 +204,7 @@ def main():
                     # pg.display.update()
                     # time.sleep(1)
                     # return
+                    
         pg.display.update()
         clock.tick(1000)
 
